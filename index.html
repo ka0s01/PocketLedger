@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101a16"><meta name="description" content="A private, simple personal money tracker.">
+<link rel="manifest" href="/manifest.json"><link rel="icon" href="/icon.svg">
+<title>PocketLedger — Money, made clear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+  <a class="brand" href="#"><span class="brand-mark">p.</span><span>Pocket<span class="brand-light">Ledger</span></span></a>
+  <div class="side-label">WORKSPACE</div>
+  <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+  <button class="nav-item" data-view="transactions"><span>↕</span> Transactions</button>
+  <button class="nav-item" data-view="analytics"><span>▥</span> Analytics</button>
+  <div class="sidebar-bottom"><div class="privacy-icon">⌁</div><div><b>Your money stays yours.</b><p>Stored privately on this device.</p></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><div class="eyebrow" id="todayLabel">YOUR FINANCES</div><h1 id="pageTitle">Good overview.</h1></div><div class="top-actions"><button class="icon-button" id="exportBtn" title="Export backup">⇩</button><button class="avatar" title="Settings" id="settingsBtn">⚙</button></div></header>
+<section class="view active" id="overviewView">
+  <div class="month-toolbar"><button id="prevMonth" class="month-arrow">←</button><button id="monthPickerBtn" class="month-name">October 2026 <span>⌄</span></button><button id="nextMonth" class="month-arrow">→</button><button class="text-button" id="thisMonthBtn">This month</button><span class="spacer"></span><button class="primary-button" id="addExpenseTop">＋ Add expense</button></div>
+  <div class="summary-grid">
+    <article class="stat-card main-stat"><div class="stat-head"><span>Total spent</span><span class="stat-icon">↗</span></div><div class="stat-value" id="totalSpent">₹0</div><div class="stat-foot"><span id="spentCompare">Your spending this month</span></div><div class="stat-spark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+    <article class="stat-card"><div class="stat-head"><span>Daily average</span><span class="stat-icon soft">◷</span></div><div class="stat-value" id="dailyAvg">₹0</div><div class="stat-foot muted">Average per calendar day</div></article>
+    <article class="stat-card"><div class="stat-head"><span>Transactions</span><span class="stat-icon soft">↕</span></div><div class="stat-value" id="transactionCount">0</div><div class="stat-foot muted" id="transactionFoot">No entries yet</div></article>
+    <article class="stat-card"><div class="stat-head"><span>Top category</span><span class="stat-icon soft">✳</span></div><div class="stat-value category-value" id="topCategory">—</div><div class="stat-foot muted" id="topCategoryFoot">Where your money goes</div></article>
+  </div>
+  <div class="content-grid">
+    <article class="panel spending-panel"><div class="panel-heading"><div><h2>Spending trend</h2><p>How your spending changes over time</p></div><select id="trendMode" aria-label="Trend period"><option value="daily">Daily</option><option value="weekly">Weekly</option></select></div><div class="chart-wrap"><canvas id="trendChart"></canvas><div class="empty-chart" id="trendEmpty">Your spending story starts here.<br><span>Add an expense to see your trend.</span></div></div></article>
+    <article class="panel category-panel"><div class="panel-heading"><div><h2>By category</h2><p>Breakdown for this month</p></div><button class="subtle-link" data-goto="analytics">Details ↗</button></div><div class="donut-wrap"><canvas id="categoryChart"></canvas><div class="donut-center"><b id="donutTotal">₹0</b><span>total spent</span></div><div class="empty-donut" id="categoryEmpty">No spending yet</div></div><div class="category-legend" id="categoryLegend"></div></article>
+  </div>
+  <article class="panel recent-panel"><div class="panel-heading"><div><h2>Recent transactions</h2><p>Your latest money moves</p></div><button class="subtle-link" data-goto="transactions">View all ↗</button></div><div id="recentList" class="transaction-list"></div><div id="recentEmpty" class="empty-state"><div class="empty-illustration">↗</div><b>A clean slate.</b><p>Add your first expense and get a clearer picture of your money.</p><button class="primary-button" id="emptyAdd">＋ Add your first expense</button></div></article>
+</section>
+<section class="view" id="transactionsView">
+  <div class="page-toolbar"><div><h2>Transactions</h2><p>Every expense, all in one place.</p></div><button class="primary-button" id="addExpenseTransactions">＋ Add expense</button></div>
+  <div class="filter-bar"><label class="search-box">⌕ <input id="searchInput" placeholder="Search notes or categories…"></label><select id="categoryFilter"><option value="">All categories</option></select><select id="sortFilter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="highest">Highest amount</option><option value="lowest">Lowest amount</option></select></div>
+  <div class="panel all-transactions"><div class="table-header"><span>TRANSACTION</span><span>CATEGORY</span><span>DATE</span><span class="right">AMOUNT</span><span></span></div><div id="allList" class="all-list"></div><div id="allEmpty" class="empty-state"><div class="empty-illustration">↕</div><b>No transactions found</b><p>Try another filter or add an expense.</p></div></div>
+</section>
+<section class="view" id="analyticsView">
+  <div class="page-toolbar"><div><h2>Analytics</h2><p>Patterns that make your money make sense.</p></div><div class="period-pill" id="analyticsPeriod">October 2026</div></div>
+  <div class="summary-grid analytics-stats"><article class="stat-card"><div class="stat-head"><span>Monthly total</span><span class="stat-icon soft">↗</span></div><div class="stat-value" id="analyticsTotal">₹0</div><div class="stat-foot muted">Selected month</div></article><article class="stat-card"><div class="stat-head"><span>Previous month</span><span class="stat-icon soft">↙</span></div><div class="stat-value" id="previousTotal">₹0</div><div class="stat-foot muted" id="monthChange">No comparison yet</div></article><article class="stat-card"><div class="stat-head"><span>Largest expense</span><span class="stat-icon soft">↑</span></div><div class="stat-value" id="largestExpense">₹0</div><div class="stat-foot muted" id="largestLabel">No expense yet</div></article></div>
+  <div class="content-grid analytics-grid"><article class="panel"><div class="panel-heading"><div><h2>Category breakdown</h2><p>Tap a category to see its transactions</p></div></div><div class="analytics-categories" id="analyticsCategories"></div></article><article class="panel"><div class="panel-heading"><div><h2>Month by month</h2><p>Recent spending history</p></div></div><div class="chart-wrap history-chart"><canvas id="historyChart"></canvas><div id="historyEmpty" class="empty-chart">Your monthly history will appear here.</div></div><div id="monthHistory" class="month-history"></div></article></div>
+</section>
+<footer class="footer"><span>Made for clarity, not complexity.</span><button id="privacyBtn">Privacy & data</button></footer>
+</main>
+</div>
+<div class="modal-backdrop" id="expenseModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><form class="modal" id="expenseForm"><div class="modal-head"><div><div class="eyebrow">MONEY IN MOTION</div><h2 id="modalTitle">Add an expense</h2></div><button type="button" class="close-button" data-close>×</button></div><label class="field-label" for="amount">Amount</label><div class="amount-input"><span>₹</span><input id="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required inputmode="decimal"></div><div class="form-row"><div class="field"><label class="field-label" for="category">Category</label><select id="category" required></select></div><div class="field"><label class="field-label" for="date">Date</label><input id="date" type="date" required></div></div><label class="field-label" for="note">Note <span class="optional">OPTIONAL</span></label><input id="note" type="text" maxlength="100" placeholder="e.g. Lunch with friends"><div class="modal-actions"><button type="button" class="secondary-button" data-close>Cancel</button><button type="submit" class="primary-button" id="saveExpense">Save expense <span>→</span></button></div><p class="form-error" id="formError"></p></form></div>
+<div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal"><div class="modal-head"><div><div class="eyebrow">MAKE IT YOURS</div><h2 id="settingsTitle">Preferences</h2></div><button class="close-button" data-close>×</button></div><label class="field-label" for="currencySelect">Currency</label><select id="currencySelect"><option value="INR">Indian Rupee (₹ INR)</option><option value="USD">US Dollar ($ USD)</option><option value="EUR">Euro (€ EUR)</option><option value="GBP">British Pound (£ GBP)</option><option value="JPY">Japanese Yen (¥ JPY)</option><option value="AED">UAE Dirham (د.إ AED)</option></select><div class="settings-note"><b>Local-first privacy</b><p>Your data is saved in this browser on this device. It is not uploaded to a server or shared with anyone. Export a backup to move your data to another device.</p></div><div class="settings-actions"><button id="importBtn" class="secondary-button">Import backup</button><input id="importFile" type="file" accept=".json,application/json" hidden><button id="clearDataBtn" class="danger-button">Delete all data</button></div><button class="primary-button full-button" data-close>Done</button></div></div>
+<div class="toast" id="toast" role="status"></div>
+<input type="file" id="backupInput" accept=".json,application/json" hidden>
+<script src="/app.js"></script>
+</body></html>

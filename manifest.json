@@ -1,0 +1,17 @@
+{
+  "name": "PocketLedger Money Tracker",
+  "short_name": "PocketLedger",
+  "description": "A clean, private personal expense tracker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f9f6",
+  "theme_color": "#15251c",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
